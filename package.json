@@ -8,5 +8,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "WTFPL"
+  "license": "WTFPL",
+  "dependencies": {
+    "amqplib": "^0.7.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.12.1"
+  }
 }
