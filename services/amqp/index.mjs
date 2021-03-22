@@ -5,48 +5,59 @@ import CONFIG from '../../config.mjs'
 
 // -------------------------------------------------------------------------
 
-function AMQPService (channel) {
-	this.channel = channel
+function AMQPService (connection) {
+	this.connection = connection
 }
 
-AMQPService.prototype.auth = function (telegramId, cookie) {
+AMQPService.prototype.replyOn = function (message, data) {
 
-	console.log('* AMQPService.auth:', telegramId, cookie)
+	//console.log('* AMQPService.replyOn:', telegramId, cookie)
 
-	return this.channel.sendToQueue(
-		CONFIG.amqp.authQueue,
-		Buffer.from(cookie.toString()),
-		{
-			persistent: true,
-			correlationId: telegramId.toString(),
-			contentType: 'text/plain',
-			replyTo: CONFIG.amqp.botQueue.name,
-		}
-	)
-
-}
-
-AMQPService.prototype.onMessage = function (callback) {
-
-	this.channel.prefetch(1)
-
-	this.channel.consume(
-		CONFIG.amqp.botQueue.name,
-		message => {
-
-			console.log('* AMQPService.onMessage consumed:', message)
-
-			callback(
+	return this.connection.createChannel()
+		.then(channel => {
+			return channel.sendToQueue(
+				message.properties.replyTo,
+				Buffer.from(data),
 				{
-					to: message.properties.correlationId.toString(),
-					text: message.content.toString(),
-				},
-				() => {
-					this.channel.ack(message)
+					contentType: 'application/json',
+					contentEncoding: 'utf8',
+					persistent: true,
+					//correlationId: telegramId.toString(),
+					timestamp: Date.now(),
 				}
 			)
-		}
-	)
+		})
+}
+
+AMQPService.prototype.onMessage = function (qName, callback) {
+
+	const queue = CONFIG.RabbitMQ.queues[qName]
+
+	return this.connection.createChannel()
+	.then(channel => {
+		channel.prefetch(1)
+
+		return channel.assertQueue(
+			queue.name,
+			queue.properties,
+		)
+		.then(() => {
+			return channel.consume(
+				queue.name,
+				message => callback(
+					message,
+					err => {
+						if (err) {
+							console.error('! AMQPService.onMessage', err)
+							return
+						}
+						channel.ack(message)
+					}
+				)
+			)
+		})
+	})
+
 }
 
 // -------------------------------------------------------------------------
@@ -56,21 +67,10 @@ export default {
 	name: 'amqp',
 
 	init () {
-		return amqp
-			.connect(CONFIG.amqp.url)
-			.then(connection => {
-				return connection.createChannel()
-				.then(channel => {
-
-					channel.assertQueue(
-						CONFIG.amqp.botQueue.name,
-						CONFIG.amqp.botQueue.properties,
-					)
-
-					console.log(`\tRabbitMQ connected at ${CONFIG.amqp.url}`)
-
-					return new AMQPService(channel)
-				})
-			})
+		return amqp.connect(CONFIG.RabbitMQ.url)
+		.then(connection => {
+			console.log(`\tRabbitMQ connected at ${CONFIG.RabbitMQ.url}`)
+			return new AMQPService(connection)
+		})
 	}
 }

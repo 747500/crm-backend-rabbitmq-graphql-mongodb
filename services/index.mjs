@@ -1,10 +1,11 @@
 
 
 import amqp from './amqp/index.mjs'
+import mongodb from './mongodb/index.mjs'
 
 const Services = [
 	amqp,
-	telegram,
+	mongodb,
 ]
 
 function run (service) {
