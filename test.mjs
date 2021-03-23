@@ -19,6 +19,7 @@ amqplib.connect(CONFIG.RabbitMQ.url)
 
 	const query = [
 		`{ user(id: "603d231a9a7451fe5bbc49b7") {
+			id
 			name
 			notifyBirthdayAt
 			notifyTelegramId
@@ -46,8 +47,9 @@ amqplib.connect(CONFIG.RabbitMQ.url)
 					message => {
 						const { content, ...header } = message
 
+						const result = JSON.parse(content)
 						//console.log(header)
-						console.dir(JSON.parse(content).data, { depth: 3 })
+						console.dir(result, { depth: 3 })
 
 						//connection.close()
 
