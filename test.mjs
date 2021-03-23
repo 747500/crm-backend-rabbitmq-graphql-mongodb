@@ -27,8 +27,9 @@ amqplib.connect(CONFIG.RabbitMQ.url)
 			version
 		} }`,
 
-		`{ users {
+		`{ users(notified: true) {
 			id
+			mtime
 			notifyTelegramId
 			notifyBirthdayAt
 		} }`
