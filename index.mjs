@@ -18,6 +18,10 @@ Services.Run()
 
 					//console.log(result)
 
+					if (result.errors) {
+						throw result.errors
+					}
+
 					return services.amqp.replyOn(
 						message,
 						JSON.stringify(result)
