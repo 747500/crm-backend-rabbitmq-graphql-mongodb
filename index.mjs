@@ -1,54 +1,6 @@
 
-import model from './model/index.mjs'
-
+import graphql from './graphql/index.mjs'
 import Services from './services/index.mjs'
-
-import { graphql, buildSchema } from 'graphql'
-import { fieldsList, fieldsMap } from 'graphql-fields-list'
-
-const schema = buildSchema(`
-
-	type User {
-		id: ID!,
-		name: String!,
-		notifyBirthdayAt: String,
-		notifyTelegramId: String,
-		version: String,
-		ctime: String!,
-		mtime: String
-	},
-
-	type Query {
-		user(id: ID!): User,
-		users: [User]
-	}
-
-`)
-
-const root = {
-	user ({ id }, context, info) {
-		const fields = fieldsList(info, {
-			transform: {
-				version: '__v',
-				id: '_id',
-			}
-		})
-		console.log(fields)
-		return model.User.findOne({ _id: id }).select(fields)
-	},
-
-	users (args, context, info) {
-		const fields = fieldsList(info, {
-			transform: {
-				version: '__v',
-				id: '_id',
-			}
-		})
-		console.log(fields)
-		return model.User.find().select(fields)
-	},
-
-}
 
 Services.Run()
 .then(services => {
@@ -57,13 +9,12 @@ Services.Run()
 
 		services.amqp.onMessage('graphql',
 			(message, ack) => {
-
 				const { content, ...header } = message
+				const query = content.toString().replace(/\s+/g, ' ')
 
-				//console.log(header)
-				console.log(content.toString())
+				console.log('* query:', query)
 
-				graphql(schema, content.toString(), root).then(result => {
+				graphql(query).then(result => {
 
 					//console.log(result)
 
