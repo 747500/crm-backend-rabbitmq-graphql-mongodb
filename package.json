@@ -1,5 +1,5 @@
 {
-  "name": "crm-backend-rabbitmq-mongodb",
+  "name": "/crm-backend-rabbitmq-graphql-mongodb",
   "version": "1.0.0",
   "description": "",
   "main": "index.mjs",
