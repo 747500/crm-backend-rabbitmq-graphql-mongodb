@@ -1,6 +1,6 @@
 # crm-backend-rabbitmq-graphql-mongodb
 
-Backend for for https://github.com/747500/crm
+Database (MongoDB) backend for https://github.com/747500/crm
 
 Prereq:
 
