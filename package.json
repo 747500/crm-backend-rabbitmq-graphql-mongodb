@@ -1,13 +1,14 @@
 {
-  "name": "/crm-backend-rabbitmq-graphql-mongodb",
+  "name": "crm-backend-rabbitmq-graphql-mongodb",
   "version": "1.0.0",
   "description": "",
   "main": "index.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"serve": "node index.mjs"
   },
   "keywords": [],
-  "author": "",
+  "author": "Serge R",
   "license": "WTFPL",
   "dependencies": {
     "amqplib": "^0.7.1",
