@@ -24,24 +24,24 @@ import * as schema from './schema/index.mjs'
 //
 const User = mongoose.model('User', schema.User)
 
-//const Doc = mongoose.model('Doc', schema.Doc)
-//const Person = Doc.discriminator('person', schema.Person)
-//const Property = Doc.discriminator('property', schema.Property)
-//const Contract = Doc.discriminator('contract', schema.Contract)
+const Doc = mongoose.model('Doc', schema.Doc)
+const Person = Doc.discriminator('person', schema.Person)
+const Property = Doc.discriminator('property', schema.Property)
+const Contract = Doc.discriminator('contract', schema.Contract)
 
 
 export {
 	User,
-//	Doc,
-//	Person,
-//	Property,
-//	Contract,
+	Doc,
+	Person,
+	Property,
+	Contract,
 }
 
 export default {
 	User,
-//	Doc,
-//	Person,
-//	Property,
-//	Contract,
+	Doc,
+	Person,
+	Property,
+	Contract,
 }

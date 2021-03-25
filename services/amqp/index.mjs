@@ -22,7 +22,7 @@ AMQPService.prototype.replyOn = function (message, data) {
 					contentType: 'application/json',
 					contentEncoding: 'utf8',
 					persistent: true,
-					//correlationId: telegramId.toString(),
+					correlationId: message.properties.correlationId,
 					timestamp: Date.now(),
 				}
 			)

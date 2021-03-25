@@ -12,15 +12,11 @@ Services.Run()
 				const { content, ...header } = message
 				const query = content.toString().replace(/\s+/g, ' ')
 
-				console.log('* query:', query)
+				console.log('* graphql query:', query)
 
 				graphql(query).then(result => {
 
-					//console.log(result)
-
-					if (result.errors) {
-						throw result.errors
-					}
+					console.log('* graphql result:', result.data || result.errors)
 
 					return services.amqp.replyOn(
 						message,
