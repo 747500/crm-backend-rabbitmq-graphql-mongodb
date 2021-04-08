@@ -12,17 +12,17 @@ export default `
 		version: String,
 	},
 
-	type ContactData {
-		_id: ID,
-		data: String,
-		description: String
-	},
-
 	interface Doc {
 		id: ID!,
 		ctime: String!,
 		mtime: String!,
 		version: String,
+	},
+
+	type PersonContactData {
+		_id: ID,
+		data: String,
+		description: String
 	},
 
 	type PersonData {
@@ -31,7 +31,7 @@ export default `
 		lastName: String,
 		birthDay: String,
 		comments: String,
-		contact: [ContactData!],
+		contact: [PersonContactData!],
 	}
 
 	type Person implements Doc {
