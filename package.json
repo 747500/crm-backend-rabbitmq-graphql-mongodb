@@ -5,7 +5,7 @@
   "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"serve": "node index.mjs"
+    "serve": "node index.mjs"
   },
   "keywords": [],
   "author": "Serge R",
@@ -13,8 +13,8 @@
   "dependencies": {
     "amqplib": "^0.7.1",
     "graphql": "^15.5.0",
-    "graphql-fields-list": "^2.2.1",
+    "graphql-fields-list": "^2.2.3",
     "moment": "^2.29.1",
-    "mongoose": "^5.12.1"
+    "mongoose": "^5.12.3"
   }
 }
